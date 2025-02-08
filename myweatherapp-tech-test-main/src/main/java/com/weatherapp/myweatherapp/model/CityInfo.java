@@ -1,6 +1,9 @@
 package com.weatherapp.myweatherapp.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class CityInfo {
@@ -14,10 +17,18 @@ public class CityInfo {
   @JsonProperty("currentConditions")
   CurrentConditions currentConditions;
 
+  public CurrentConditions getCurrentConditions(){
+    return currentConditions;
+  }
+
   @JsonProperty("days")
   List<Days> days;
 
-  static class CurrentConditions {
+  public List<Days> getDays(){
+    return days;
+  }
+
+  public static class CurrentConditions {
     @JsonProperty("temp")
     String currentTemperature;
 
@@ -35,9 +46,18 @@ public class CityInfo {
 
     @JsonProperty("conditions")
     String conditions;
+
+    public LocalTime getSunrise(){
+      return LocalTime.parse(sunrise);
+    }
+
+    public LocalTime getSunset(){
+      return LocalTime.parse(sunset);
+    }
+
   }
 
-  static class Days {
+  public static class Days {
 
     @JsonProperty("datetime")
     String date;
@@ -56,6 +76,14 @@ public class CityInfo {
 
     @JsonProperty("description")
     String description;
+
+    public String getConditions(){
+      return conditions;
+    }
+
+    public LocalDate getDate(){
+      return LocalDate.parse(date);
+    }
 
   }
 
