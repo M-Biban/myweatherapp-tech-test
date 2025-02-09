@@ -21,25 +21,33 @@ public class WeatherService {
     return weatherRepo.getByCity(city);
   }
 
-  public long daylightHoursByCity(String city) {
+  public long daylightMinutesByCity(String city) {
 
-    CityInfo.CurrentConditions conditions = forecastByCity(city).getCurrentConditions();
-    LocalTime sunrise = conditions.getSunrise();
-    LocalTime sunset = conditions.getSunset();
-
-    return sunrise.until(sunset, ChronoUnit.MINUTES);
+    try {
+      CityInfo.CurrentConditions conditions = forecastByCity(city).getCurrentConditions();
+      LocalTime sunrise = conditions.getSunrise();
+      LocalTime sunset = conditions.getSunset();
+      return sunrise.until(sunset, ChronoUnit.MINUTES);
+    } catch (Exception e) {
+      return -1; //This will be handled in the controller
+    }
+    
   }
 
-  public Boolean IsRainingByCity(String city) {
+  public Boolean isRainingByCity(String city) {
 
     LocalDate now = LocalDate.now();
 
-    for (CityInfo.Days day: forecastByCity(city).getDays()){
-      String condition = day.getConditions();
-      LocalDate date = day.getDate();
-      if(condition.contains("Rain") && date.equals(now)){
-        return true;
+    try {
+      for (CityInfo.Days day: forecastByCity(city).getDays()){
+        String condition = day.getConditions();
+        LocalDate date = day.getDate();
+        if(condition.contains("Rain") && date.equals(now)){
+          return true;
+        }
       }
+    } catch (Exception e) {
+      return null;
     }
 
     return false;
